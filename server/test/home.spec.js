@@ -23,7 +23,7 @@ describe("Home", () => {
       var roomName = "test-room";
       home.createRoom(roomName, 4);
       home.createRoom(roomName, 3);
-      assert.equal(4, home.getRoom(roomName, (room) => room.playerCount()));
+      assert.equal(4, home.getRoom(roomName, (room) => room.playerLimit()));
     })
 
     it("shouldn't create another room", () => {
@@ -33,11 +33,5 @@ describe("Home", () => {
       home.createRoom(roomName, 3);
       assert.equal(1, home.state.rooms.length);
     })
-
-//     it("shouldn't create a new room if such room exists", () => {
-//       var home = new Home(io);
-//       var roomName = "test-room"
-//       home.createRoom(roomName, 4);
-//     })
   })
 })
