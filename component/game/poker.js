@@ -1,14 +1,22 @@
 'use strict';
-
-const _ = require('lodash');
 /*
  * define the rule for poker here
  * probably should've implement / extend Game.Base
  */
+const PP = require('./poker.play.js');
+const Pair = PP.Pair;
+const Triplet = PP.Triplet;
+const Bomb = PP.Bomb;
+const Color = PP.Color;
+const Straight = PP.Straight;
+const FullHouse = PP.FullHouse;
+const StraightFlush = PP.StraightFlush;
+
 class Poker {
   constructor(){
-    this.state{
-      lastPlayed: undefined;
+    this.props = {
+      plays: [StraightFlush, FullHouse, Color, Straight, Bomb, Triplet, Pair],
+      playedCards: new Array(52)
     }
   }
 
@@ -21,8 +29,24 @@ class Poker {
     }
   }
 
-  executePlay(player, cards){
+  /*
+   * @params cardIndexs {Integer};
+   * card value that hasn't been transformed to a card
+   * e.g: selectPlay([51, 0, 1, 2])
+   * instead of selectPlay({suit: "...", value: "..."}...)
+   */
+  selectPlay(cardIndexs){
+    const candidates = this.props.plays.filter((play) => play.checkAllowed(cardIndexs))
+    if(candidates.length < 1) { throw `not a valid play` }
+    if(candidates.length > 1) { /* should only be reached by straight flush*/ }
+    return candidates[0];
   }
+
+  executePlay(player, cardIndexs){
+    this.validatePlay(player, cardIndexs);
+    let play = this.selectPlay(cardIndexs);
+  }
+
 }
 
-exports.Player = Player;
+exports.Poker = Poker;
