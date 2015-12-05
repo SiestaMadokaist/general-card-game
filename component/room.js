@@ -1,11 +1,12 @@
 'use strict';
 class Room {
-  // @params roomName {String}
-  // @params playerLimit {Integer}
-  // amount of player
-  // game won't start until this room had that much player
-  // @params cardLimit {Integer}
-  // 52 for a game without joker, 54 for a game with joker
+  /**
+   * @params roomName {String}
+   * @params playerLimit {Integer}
+   * amount of player
+   * game won't start until this room had that much player
+   * @params cardLimit {Integer}
+   */
   constructor(roomName, playerLimit, cardLimit, game){
     this.state = {
       name: roomName,
@@ -16,12 +17,14 @@ class Room {
     }
   }
 
-  // @params player {Player}
-  // @params cards {Array<Int>}
+  /**
+   * @params player {Player}
+   * @params cards {Array<Int>}
+   */
   play(player, cards){
-    game.validatePlay(cards);
-    game.executePlay(this, player, cards);
-    game.checkWinCondition(this, player, cards);
+    game.validatePlay(player, cards);
+    game.executePlay(player, cards);
+    game.checkWinCondition(player, cards);
   }
 
   name(){
