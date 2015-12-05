@@ -11,11 +11,23 @@ const Color = PP.Color;
 const Straight = PP.Straight;
 const FullHouse = PP.FullHouse;
 const StraightFlush = PP.StraightFlush;
+const Single = PP.Single;
+const Pass = PP.Pass;
 
 class Poker {
   constructor(){
     this.props = {
-      plays: [StraightFlush, FullHouse, Color, Straight, Bomb, Triplet, Pair],
+      plays: [
+        StraightFlush,
+        FullHouse,
+        Color,
+        Straight,
+        Bomb,
+        Triplet,
+        Pair,
+        Single,
+        Pass
+      ],
       playedCards: new Array(52)
     }
   }
@@ -37,7 +49,7 @@ class Poker {
    */
   selectPlay(cardIndexs){
     const candidates = this.props.plays.filter((play) => play.checkAllowed(cardIndexs))
-    if(candidates.length < 1) { throw `not a valid play` }
+    if(candidates.length < 1) { throw `${cardIndexs} not a valid play` }
     if(candidates.length > 1) { /* should only be reached by straight flush*/ }
     return candidates[0];
   }
@@ -46,6 +58,7 @@ class Poker {
     this.validatePlay(player, cardIndexs);
     let play = this.selectPlay(cardIndexs);
   }
+
 
 }
 

@@ -1,6 +1,7 @@
 'use strict';
 const Poker = require("../component/game/poker.js");
 const PP = require('../component/game/poker.play.js');
+const PH = require("./poker.play.hand.spec.js");
 const assert = require('assert');
 const Pair = PP.Pair;
 const Triplet = PP.Triplet;
@@ -9,139 +10,133 @@ const Color = PP.Color;
 const Straight = PP.Straight;
 const FullHouse = PP.FullHouse;
 const StraightFlush = PP.StraightFlush;
-
-
 describe("Poker.Play", () => {
-  const straigtFlushHand = [
-    {suit: "Spade", value: "Jack"},
-    {suit: "Spade", value: "As"},
-    {suit: "Spade", value: 10},
-    {suit: "Spade", value: "Queen"},
-    {suit: "Spade", value: "King"}
-  ];
 
-  const colorHand = [
-    {suit: "Spade", value: "Jack"},
-    {suit: "Spade", value: "As"},
-    {suit: "Spade", value: 1},
-    {suit: "Spade", value: 8},
-    {suit: "Spade", value: 3}
-  ];
+  describe("Pair", () =>{
+    const excludedHand = [
+      PH.pairHand
+    ];
+    it("accept pair hand", () => {
+      assert.equal(true, Pair.validatePlay(PH.pairHand));
+    });
 
-  const bombHand = [
-    {suit: "Spade", value: "Jack"},
-    {suit: "Heart", value: "Jack"},
-    {suit: "Clover", value: "Jack"},
-    {suit: "Diamand", value: "Jack"},
-  ]
+    it("doesn't accept no hand", () => {
+      assert.equal(false, Pair.validatePlay(PH.noHand2));
+    });
 
-  const straightHand = [
-    {suit: "Spade", value: "Jack"},
-    {suit: "Heart", value: "As"},
-    {suit: "Clover", value: 10},
-    {suit: "Spade", value: "Queen"},
-    {suit: "Spade", value: "King"}
-  ]
+    it("doesn't accept non pair hand", () => {
+      assert.equal(false, Pair.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Pair.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Pair.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Pair.validatePlay(PH.randomHand(excludedHand)));
+    });
+  });
 
-  const pairHand = [
-    {suit: "Spade", value: "Jack"},
-    {suit: "Heart", value: "Jack"}
-  ]
+  describe("TripletHand", () =>{
+    const excludedHand = [
+      PH.tripletHand
+    ];
+    it("accept triplet hand", () => {
+      assert.equal(true, Triplet.validatePlay(PH.tripletHand));
+    });
 
-  const tripletHand = [
-    {suit: "Spade", value: "As"},
-    {suit: "Spade", value: "As"},
-    {suit: "Spade", value: "As"},
-  ]
+    it("doesn't accept no hand", () => {
+      assert.equal(false, Triplet.validatePlay(PH.noHand3));
+    });
 
-  const fullHouseHand = [
-    {suit: "Spade", value: "Jack"},
-    {suit: "Heart", value: "As"},
-    {suit: "Diamond", value: "As"},
-    {suit: "Diamond", value: "Jack"},
-    {suit: "Heart", value: "Jack"}
-  ]
-
-
-  const randomHand = (excluded) => {
-    const originalChoices = [
-      straigtFlushHand,
-      straightHand,
-      bombHand,
-      pairHand,
-      colorHand,
-    ]
-
-    const availableChoices = originalChoices.filter((hand) => excluded.indexOf(hand) === -1)
-    const choiceIndex = parseInt(Math.random() * availableChoices.length);
-    return availableChoices[choiceIndex];
-  }
+    it("doesn't accept non triplet hand", () => {
+      assert.equal(false, Triplet.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Triplet.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Triplet.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Triplet.validatePlay(PH.randomHand(excludedHand)));
+    });
+  });
 
   describe("Bomb", () => {
     it("accept bomb hand", () => {
-      assert.equal(true, Bomb.validatePlay(bombHand));
-    })
+      assert.equal(true, Bomb.validatePlay(PH.bombHand));
+    });
+
+    it("doesn't accept no hand", () => {
+      assert.equal(false, Bomb.validatePlay(PH.noHand4));
+    });
 
     it("doesn't accept non bomb hand", () => {
-      assert.equal(false, Bomb.validatePlay(randomHand([bombHand])));
-      assert.equal(false, Bomb.validatePlay(randomHand([bombHand])));
-      assert.equal(false, Bomb.validatePlay(randomHand([bombHand])));
+      assert.equal(false, Bomb.validatePlay(PH.randomHand([PH.bombHand])));
+      assert.equal(false, Bomb.validatePlay(PH.randomHand([PH.bombHand])));
+      assert.equal(false, Bomb.validatePlay(PH.randomHand([PH.bombHand])));
     })
   })
 
   describe("Straight", () => {
     const excludedHand = [
-      straigtFlushHand,
-      straightHand
+      PH.cyclicStraightFlushHand,
+      PH.straightFlushHand,
+      PH.straightHand
     ]
     it("accept straight flush", () => {
-      assert.equal(true, Straight.validatePlay(straigtFlushHand));
-    })
+      assert.equal(true, Straight.validatePlay(PH.straightFlushHand));
+    });
+
+    it("doesn't accept no hand", () => {
+      assert.equal(false, Straight.validatePlay(PH.noHand5));
+    });
 
     it("accept straigt hand", () => {
-      assert.equal(true, Straight.validatePlay(straightHand));
-   })
+      assert.equal(true, Straight.validatePlay(PH.straightHand));
+    });
 
     it("doesn't accept non straight hand", () => {
-      assert.equal(false, Straight.validatePlay(randomHand(excludedHand)));
-      assert.equal(false, Straight.validatePlay(randomHand(excludedHand)));
-      assert.equal(false, Straight.validatePlay(randomHand(excludedHand)));
-    })
-  })
+      assert.equal(false, Straight.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Straight.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Straight.validatePlay(PH.randomHand(excludedHand)));
+    });
+  });
 
   describe("Color", () => {
     const excludedHand = [
-      straigtFlushHand,
-      colorHand
+      PH.cyclicStraightFlushHand,
+      PH.straightFlushHand,
+      PH.colorHand
     ]
+    it("doesn't accept no hand", () => {
+      assert.equal(false, Color.validatePlay(PH.noHand5));
+    });
+
     it("accept straight flush", () => {
-      assert.equal(true, Color.validatePlay(straigtFlushHand));
-    })
+      assert.equal(true, Color.validatePlay(PH.straightFlushHand));
+    });
 
     it("accept color hand", () => {
-      assert.equal(true, Color.validatePlay(colorHand));
-    })
+      assert.equal(true, Color.validatePlay(PH.colorHand));
+    });
 
     it("doesn't accept non straight hand", () => {
-      assert.equal(false, Color.validatePlay(randomHand(excludedHand)));
-      assert.equal(false, Color.validatePlay(randomHand(excludedHand)));
-      assert.equal(false, Color.validatePlay(randomHand(excludedHand)));
-    })
-  })
+      assert.equal(false, Color.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Color.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Color.validatePlay(PH.randomHand(excludedHand)));
+    });
+  });
 
   describe("StraightFlush", () => {
     const excludedHand = [
-      straigtFlushHand,
-    ]
+      PH.cyclicStraightFlushHand,
+      PH.straightFlushHand,
+    ];
+
+    it("doesn't accept no hand", () => {
+      assert.equal(false, StraightFlush.validatePlay(PH.noHand5));
+    });
+
     it("accept straight flush", () => {
-      assert.equal(true, StraightFlush.validatePlay(straigtFlushHand));
-    })
+      assert.equal(true, StraightFlush.validatePlay(PH.straightFlushHand));
+    });
 
     it("doesn't accept non straigt flush hand", () => {
-      assert.equal(false, StraightFlush.validatePlay(randomHand(excludedHand)));
-      assert.equal(false, StraightFlush.validatePlay(randomHand(excludedHand)));
-      assert.equal(false, StraightFlush.validatePlay(randomHand(excludedHand)));
-    })
-  })
+      assert.equal(false, StraightFlush.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, StraightFlush.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, StraightFlush.validatePlay(PH.randomHand(excludedHand)));
+    });
+  });
 
-})
+});

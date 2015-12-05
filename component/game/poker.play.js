@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash');
+const _ = require('lodash');
 class PokerRule {
 
   /*
@@ -13,20 +13,24 @@ class PokerRule {
     }
   }
 
+  name(){
+    return this.props.name;
+  }
+
   checkAllowed(cardIndexs) {
-    const cards = cardIndexs.map(play.representCard);
+    const cards = cardIndexs.map(PokerRule.representCard);
     return this.validatePlay(cards);
   }
 
   validatePlay(cards){
-    return this.props.rule(cards)
+    return this.props.rule(cards);
   }
 
-  representCard(cardId){
-    var cardOrder = this.cardOrder();
-    var suitOrder = this.suitOrder();
-    var scoreIndex = parseInt(n / suitOrder.length);
-    var suitsIndex = n % suitOrder.length;
+  static representCard(cardId){
+    var cardOrder = PokerRule.cardOrder();
+    var suitOrder = PokerRule.suitOrder();
+    var scoreIndex = parseInt(cardId / suitOrder.length);
+    var suitsIndex = cardId % suitOrder.length;
     return {suit: suitOrder[suitsIndex], value: cardOrder[scoreIndex]};
   }
 
@@ -35,26 +39,25 @@ class PokerRule {
   }
 
   static suitOrder(){
-    return ["Diamond", "Clover", "Hearts", "Spade"];
+    return ["Diamond", "Clover", "Heart", "Spade"];
   }
-
 }
 
 const Pair = new PokerRule("Pair", (cards) => {
-      if(cards.length != 2){ return false; }
-      if(cards[0].value != cards[1].value) { return false; }
-      return true;
+  if(cards.length != 2){ return false; }
+  if(cards[0].value != cards[1].value) { return false; }
+  return true;
 })
 
 const Triplet = new PokerRule("Triplet", (cards) => {
-      if(cards.length != 3) { return false; }
-      if(cards.filter((card) => card.value != cards[0].value) >= 0) { return false; }
-      return true;
+  if(cards.length != 3) { return false; }
+  if(cards.filter((card) => card.value != cards[0].value).length >= 1) { return false; }
+  return true;
 })
 
 const Bomb = new PokerRule("Bomb", (cards) => {
   if(cards.length != 4) { return false; }
-  if(cards.filter((card) => card.value != cards[0].value) >= 1) { return false; }
+  if(cards.filter((card) => card.value != cards[0].value).length >= 1) { return false; }
   return true;
 })
 
@@ -98,6 +101,14 @@ const StraightFlush = new PokerRule("StraightFlush", (cards) => {
   return true;
 })
 
+const Single = new PokerRule("Single", (cards) => {
+  return cards.length == 1;
+})
+
+const Pass = new PokerRule("Pass", (cards) => {
+  return cards.length == 0;
+})
+
 exports.Pair = Pair;
 exports.Triplet = Triplet;
 exports.Bomb = Bomb;
@@ -105,3 +116,6 @@ exports.Color = Color;
 exports.Straight = Straight;
 exports.FullHouse = FullHouse;
 exports.StraightFlush = StraightFlush;
+exports.Single = Single;
+exports.Pass = Pass;
+exports.PokerRule = PokerRule;
