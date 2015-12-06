@@ -2,11 +2,11 @@
 const _ = require("lodash");
 const assert = require('assert');
 const Poker = require('../component/game/poker.js').Poker;
-const PP = require("../component/game/poker.play.js").PokerRule;
+const PR = require("../component/game/poker.play.js").PokerRule;
 const PH = require("./poker.play.hand.spec.js");
 
 describe("Poker", () => {
-  const cardPools = _.range(52).map((i) => [PP.representCard(i), i]);
+  const cardPools = _.range(52).map((i) => [PR.representCard(i), i]);
   const inverseCard = (card) => {
     const cp = cardPools.filter((xpcard) => {
       const pcard = xpcard[0];
@@ -18,6 +18,7 @@ describe("Poker", () => {
     }
     return cp[0][1];
   }
+
   describe(".selectPlay", () => {
     const excluded = [
       PH.noHand2,

@@ -4,6 +4,7 @@
  * probably should've implement / extend Game.Base
  */
 const PP = require('./poker.play.js');
+const _ = require('lodash');
 const Pair = PP.Pair;
 const Triplet = PP.Triplet;
 const Bomb = PP.Bomb;
@@ -13,10 +14,17 @@ const FullHouse = PP.FullHouse;
 const StraightFlush = PP.StraightFlush;
 const Single = PP.Single;
 const Pass = PP.Pass;
+const PR = PP.PokerRule;
 
 class Poker {
-  constructor(){
+  constructor(playerLimit){
+    this.state = {
+      ready: false,
+      player: undefined,
+      players: undefined
+    };
     this.props = {
+      playerLimit: playerLimit,
       plays: [
         StraightFlush,
         FullHouse,
@@ -29,16 +37,12 @@ class Poker {
         Pass
       ],
       playedCards: new Array(52)
-    }
+    };
+    this.cardPoolsWithIndex = _.range(52).map((i) => [PR.representCard(i), i]);
   }
 
-  validatePlay(player, cards){
-    if(cards.some((card) => player.cards().indexOf(card) == -1)){
-      throw `dammit you player ${player.name} you cheating bastard`;
-    }
-    if(this.lastPlayedCards() == undefined){
-      return true;
-    }
+  setPlayers(players){
+    this.state.players = players;
   }
 
   /*
@@ -55,11 +59,39 @@ class Poker {
   }
 
   executePlay(player, cardIndexs){
+    if(! this.allowPlayer(player)) { throw `please wait until your turn` }
     this.validatePlay(player, cardIndexs);
     let play = this.selectPlay(cardIndexs);
+    this.updatePlayer()
   }
 
+  updatePlayer(){
+    this.state.player = (this.state.player + 1) % this.props.playerLimit;
+  }
 
+  static inversePresentedCard(card){
+    const result = Poker.cardPoolsWithIndex.filter((cardAndIndex) => {
+      const xcard = cardAndIndex[0];
+      const index = cardAndIndex[1];
+      return xcard.value === card.value && xcard.suit == card.suit;
+    });
+    if(result.length == 0){
+      throw card;
+    }
+    if(result[0].length == 0){
+      throw result;
+    }
+    return result[0][1];
+  }
+
+  validatePlay(player, cards){
+    if(cards.some((card) => player.cards().indexOf(card) == -1)){
+      throw `dammit you player ${player.name} you cheating bastard`;
+    }
+    if(this.lastPlayedCards() == undefined){
+      return true;
+    }
+  }
 }
 
 exports.Poker = Poker;

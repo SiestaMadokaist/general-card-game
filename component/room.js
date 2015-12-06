@@ -6,15 +6,23 @@ class Room {
    * amount of player
    * game won't start until this room had that much player
    * @params cardLimit {Integer}
+   * 52 for a game without joker, 54 for two joker.
+   * TODO: validate the value;
+   * TODO: still developed under the assumption that cardLimit would always be 52
    */
   constructor(roomName, playerLimit, cardLimit, game){
+    var mutable_players = [];
+    // this variable will be mutable by game or room
+    // the plan is only room may mutate the players
+    // and by doing so, the game players would also be mutated
     this.state = {
       name: roomName,
       playerLimit: playerLimit,
-      cardLimit: cardLimit || 52,
-      players: [],
+      players: mutable_players,
+      cardLimit: cardLimit,
       deck: this.generateDeck()
     }
+    game.setPlayers(mutable_players)
   }
 
   /**
