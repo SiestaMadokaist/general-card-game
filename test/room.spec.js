@@ -1,18 +1,11 @@
 'use strict';
-var server = require('express')();
-var http = require('http').Server(server);
-var io = require('socket.io')(http);
-var path = require('path');
-var config = require('../config.js');
-var port = config.port;
-var Home = require('../component/home.js').Home;
-var assert = require('assert');
+const assert = require('assert');
 
 describe("Room", () => {
-  let Home = require("../component/home.js").Home;
-  let Room = require("../component/room.js").Room;
-  let Poker = require("../component/game/poker.js").Poker;
-  let Player = require("../component/player.js").Player;
+  const Home = require("../component/home.js").Home;
+  const Room = require("../component/room.js").Room;
+  const Poker = require("../component/game/poker.js").Poker;
+  const Player = require("../component/player.js").Player;
 
   describe(".shuffle", () => {
     it("keep the amount of deck", () => {
