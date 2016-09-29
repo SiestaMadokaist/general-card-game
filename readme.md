@@ -1,2 +1,1 @@
-#Terminal Card
-Terminal based card game
+General Kind of Card Game
