@@ -99,14 +99,24 @@ class Card{
 
 }
 
+class ImaginaryCard extends Card {
+    value(){
+        return 14;
+    }
+}
+
 class Joker extends Card {
 
     value(){
-        throw `for now i will just raise error if this function is called`
+        throw new Error("for now this is error");
+    }
+
+    isAce(){
+        return true;
     }
 
     suit(){
-        throw `for now i will just raise error if this function is called`
+        throw new Error("for now this is error");
     }
 
     /*
@@ -151,8 +161,11 @@ class Joker extends Card {
 }
 
 
+
 module.exports.fromValue = (i) => {
-    if(i < NORMAL_CARD_LIMIT){
+    if(i < 0){
+        return new ImaginaryCard();
+    }else if(i < NORMAL_CARD_LIMIT && i >= 1){
         const value = i % 13;
         const suit = Math.floor(i / 13);
         return new Card(value + 1, suit)
@@ -169,6 +182,16 @@ module.exports.toCard = (cardObj) => {
     _.assert(suit <= SUIT.MAX, ".that`s not a valid suit")
     _.assert(suit >= SUIT.MIN, ".that`s not a valid suit")
     return exports.fromValue(value - 1 + (suit * 13));
+}
+
+module.exports.imaginary = (cardObj) => {
+    const value = cardObj.value;
+    const suit = cardObj.suit;
+    _.assert(value <= 14, ".value cant be greater than 13");
+    _.assert(value >= 1, ".value cant be lower than 1");
+    _.assert(suit <= SUIT.MAX, ".that`s not a valid suit")
+    _.assert(suit >= SUIT.MIN, ".that`s not a valid suit")
+    return exports.fromValue(-1);
 }
 
 module.exports.CARDVALUE = CARDVALUE;

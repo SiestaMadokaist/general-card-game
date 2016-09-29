@@ -30,10 +30,17 @@ class SuitRow{
     }
 
     top(){
-        return Card.toCard({
-            value: this.state.top,
-            suit: this.suit()
-        })
+        if(this.state.top < 13){
+            return Card.toCard({
+                value: this.state.top,
+                suit: this.suit()
+            })
+        } else {
+            return Card.imaginary({
+                value: this.state.top,
+                suit: this.suit()
+            })
+        }
     }
 
     bottom(){
@@ -84,6 +91,7 @@ class SuitRow{
 
     put(card){
         _.assert(!card.isJoker(), "please use putAbove / putBelow instead of just put");
+        _.assert(!card.isAce(), "please use putAbove / putBelow instead of just put");
         this.validateLegitPlay(card);
         if(card.isSeven()){
             this.state.available = true;
@@ -96,15 +104,29 @@ class SuitRow{
         }
     }
 
+    topped(){
+        return this.state.top > CARDVALUE.KING;
+    }
+
+    bottomed(){
+        return this.state.top < 2;
+    }
+
     // @params card {Card}
     putAbove(card){
         this.validateLegitPlay(card);
         this.state.top++;
+        if(card.isAce() && this.topped()){
+            this.state.available = false;
+        }
     }
 
     putBelow(card){
         this.validateLegitPlay(card);
         this.state.bottom--;
+        if(card.isAce() && this.bottomed()){
+            this.state.available = false;
+        }
     }
 }
 
