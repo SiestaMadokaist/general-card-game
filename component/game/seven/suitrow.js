@@ -1,20 +1,10 @@
 "use strict";
-const _ require("lodash");
+const _ = require("lodash");
+_.assert = require("underscore.assert");
+const SUIT = require("./suit.js");
+const Card = require("./card.js");
+const CARDVALUE = Card.CARDVALUE;
 
-const SUIT = {
-    DIAMOND: 0,
-    CLOVER: 1,
-    HEART: 2,
-    SPADE: 3
-}
-
-
-// well, this is more or less, how we define constant without value (only object reference) in javascript, isnt it?
-
-function ACE(){ _.assert(false, "this function is not defined to be called, it`s supposed to be a constant you compare to")}
-function JOKER(){ _.assert(false, "this function is not defined to be called, it`s supposed to be a constant you compare to")}
-
-const SEVEN = 7;
 
 class SuitRow{
     /*
@@ -22,8 +12,8 @@ class SuitRow{
      */
     constructor(suit){
         this.state = {
-            top: SEVEN,
-            bottom: SEVEN,
+            top: CARDVALUE.SEVEN,
+            bottom: CARDVALUE.SEVEN,
             available: false,
         }
         this.props = {
@@ -35,16 +25,26 @@ class SuitRow{
         return this.props.suit;
     }
 
+    suitName(){
+        return SUIT.inverse(this.suit());
+    }
+
     top(){
-        return this.state.top;
+        return Card.toCard({
+            value: this.state.top,
+            suit: this.suit()
+        })
     }
 
     bottom(){
-        return this.state.bottom;
+        return Card.toCard({
+            value: this.state.bottom,
+            suit: this.suit()
+        })
     }
 
     hasReachedKing(){
-        return this.state.top == KING
+        return this.state.top == CARDVALUE.KING
     }
 
     hasReached2(){
@@ -53,44 +53,59 @@ class SuitRow{
 
     /*
      * @param card {Card}
+     * TODO: need a global check where was the other ace closing
+     * probably better not to check in this class, but in the game itself
+     * also need to check if we can put seven of this suit
+     * it should be handled by the Game itself though probably
      */
     validateLegitPlay(card){
-        // TODO: need a global check where was the other ace closing
-        // probably better not to check in this class, but in the game itself
-        // also need to check if we can put seven of this suit
-        // it should be handled by the Game itself though probably
-        if(card.isSeven()) {
-           _.assert(!this.state.available, `${SEVEN} of ${this.suit()} has not come out`);
-        }else if(card.isJoker()) {
-            return true
-        }
-        // ASSERTION
-        _.assert(card.suit == this.suit(), `cannot append ${card.suit} into ${this.suit()}`);
-        if(card.isAce()){
-            if(card.aboveSeven()){
-                // ASSERTION
-                _.assert(card.isSuccessor(this.top()), `cannot append ${card.value} of ${card.suit} into ${this.suit()}`);
-            }else if(card.belowSeven()){
-                // ASSERTION
-                _.assert(card.isPredecessor(this.bottom()), `cannot append ${card.value} of ${card.suit} into ${this.suit()}`);
+        if(card.isJoker()){
+            _.assert(this.isAvailable(), true, "even joker cannot be played in slot of 7");
+        } else {
+            _.assert(this.suit() == card.suit(), `${card} cannot be played in the row of ${this.suitName()}`);
+            if(card.isAce()){
+                _.assert(this.hasReached2() || this.hasReachedKing(), "Ace can only be played after King or 2 is played");
+            } else if(card.isSeven()) {
+                _.assert(!this.isAvailable(), false, "how the fuck did you even play the same seven twice");
+            } else if(card.isAboveSeven()) {
+                _.assert(this.isAvailable(), `suit row of ${this.suitName()} is not ready to be played yet`)
+                _.assert(card.isSuccessor(this.top()), `cannot put ${card} above ${this.top()}`);
+            } else if(card.isBelowSeven()) {
+                _.assert(this.isAvailable(), `suit row of ${this.suitName()} is not ready to be played yet`)
+                _.assert(card.isPredecessor(this.bottom()), `cannot put ${card} below ${this.bottom()}`);
             }
-        }else{
-            // ASSERTION
-            _.assert(this.hasReachedKing() || this.hasReached2());
         }
         return true;
     }
 
+    isAvailable(){
+        return this.state.available;
+    }
+
+    put(card){
+        _.assert(!card.isJoker(), "please use putAbove / putBelow instead of just put");
+        this.validateLegitPlay(card);
+        if(card.isSeven()){
+            this.state.available = true;
+        }else if(card.isAboveSeven()){
+            this.putAbove(card);
+        }else if(card.isBelowSeven()){
+            this.putBelow(card);
+        }else{
+            throw new Error(`what the fuck is ${card}`);
+        }
+    }
+
     // @params card {Card}
-    addAbove(card){
-        validateLegitPlay(card);
+    putAbove(card){
+        this.validateLegitPlay(card);
         this.state.top++;
     }
 
-    addBelow(card){
-        validateLegitPlay(card);
+    putBelow(card){
+        this.validateLegitPlay(card);
         this.state.bottom--;
     }
 }
 
-exports = SuitRow
+module.exports = SuitRow
