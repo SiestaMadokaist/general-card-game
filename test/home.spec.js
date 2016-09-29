@@ -9,7 +9,6 @@ var Home = require('../component/home.js').Home;
 var assert = require('assert');
 
 describe("Home", () => {
-  let Home = require("../component/home.js").Home;
   let Poker = require("../component/game/poker.js").Poker;
   describe(".createRoom", () => {
     it("should make the room", () => {

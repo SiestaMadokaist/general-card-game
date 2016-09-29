@@ -50,10 +50,10 @@ class Player {
   }
 
   /**
-   * @params card_indexs {Array<Integer>}
+   * @params cardIndexs {Array<Integer>}
    */
-  play(card_indexs){
-    var playedCards = card_indexs.map((i) => this.state.cards[i]);
+  play(cardIndexs){
+    var playedCards = cardIndexs.map((i) => this.state.cards[i]);
     this.props.room.play(this, playedCards);
   }
 

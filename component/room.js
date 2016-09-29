@@ -11,18 +11,18 @@ class Room {
    * TODO: still developed under the assumption that cardLimit would always be 52
    */
   constructor(roomName, playerLimit, cardLimit, game){
-    var mutable_players = [];
+    var mutablePlayers = [];
     // this variable will be mutable by game or room
     // the plan is only room may mutate the players
     // and by doing so, the game players would also be mutated
     this.state = {
       name: roomName,
       playerLimit: playerLimit,
-      players: mutable_players,
+      players: mutablePlayers,
       cardLimit: cardLimit,
       deck: this.generateDeck()
     }
-    game.setPlayers(mutable_players)
+    game.setPlayers(mutablePlayers)
   }
 
   /**

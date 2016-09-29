@@ -39,7 +39,7 @@ class Home{
   // @params cardLimit {Integer}
   // @params game {Game}
   createRoom(roomName, playerLimit, cardLimit, game){
-    var room = this.getRoom(roomName, (room) => room);
+    var room = this.getRoom(roomName, (xroom) => xroom);
     if(room == undefined || room == null){
       this.state.rooms.push(new Room(roomName, playerLimit, cardLimit, new game(playerLimit)))
     }
