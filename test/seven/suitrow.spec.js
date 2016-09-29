@@ -41,6 +41,11 @@ describe("SuitRow", () => {
                 assert.throws(() => spadeRow.put(eightSpade));
             })
 
+            it("must prevent another seven from filling the position of another seven in different row", () =>{
+                const spadeRow = new SuitRow(SUIT.SPADE);
+                assert.throws(() => spadeRow.put(sevenDiamond));
+            })
+
             // TODO: shouldn`t be on the scope of put
             // put it in putAbove / putBelow
             it("must prevent even joker from filling the slot of seven", () => {
