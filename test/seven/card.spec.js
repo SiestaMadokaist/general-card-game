@@ -6,7 +6,7 @@ const SUIT = require("../../component/game/seven/suit.js")
 const SuitRow = require("../../component/game/seven/suitrow.js");
 const Card = require("../../component/game/seven/card.js");
 
-describe("Card", () => {
+describe("Seven.Card", () => {
     describe("#toCard", () => {
         it("return the correct card", () => {
             const card = Card.toCard({value: 7, suit: SUIT.SPADE});

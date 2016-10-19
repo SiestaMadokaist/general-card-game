@@ -7,7 +7,7 @@ const SUIT = require("../../component/game/seven/suit.js")
 const SuitRow = require("../../component/game/seven/suitrow.js");
 const Card = require("../../component/game/seven/card.js");
 
-describe("SuitRow", () => {
+describe("Seven.SuitRow", () => {
     describe(".put", () =>{
         context("at start of game", () => {
             const aceSpade = Card.toCard({value: 1, suit: SUIT.SPADE});
@@ -55,7 +55,7 @@ describe("SuitRow", () => {
                 assert.throws(() => spadeRow.putBelow(joker));
             })
 
-            it("must behave as substitute of the next card", () => {
+            it("must allow joker to behave as substitute of the next card", () => {
                 const spadeRow = new SuitRow(SUIT.SPADE);
                 spadeRow.put(sevenSpade);
                 spadeRow.putAbove(joker);
@@ -76,7 +76,7 @@ describe("SuitRow", () => {
                 spadeRow.putAbove(joker);
             })
 
-            it("must be playable up until ace", () => {
+            it("must be playable up only until ace", () => {
                 const spadeRow = new SuitRow(SUIT.SPADE);
                 spadeRow.put(sevenSpade);
                 spadeRow.put(eightSpade);
@@ -86,7 +86,10 @@ describe("SuitRow", () => {
                 spadeRow.put(queenSpade);
                 spadeRow.put(kingSpade);
                 spadeRow.putAbove(aceSpade);
-                assert.equal(spadeRow.top().value(), 14)
+                assert.equal(spadeRow.top().value(), 14);
+                assert.equal(spadeRow.isAvailable(), false);
+                assert.throws(() => spadeRow.put(sixSpade), _.AssertionError);
+                assert.throws(() => spadeRow.put(twoSpade), _.AssertionError);
             })
 
             it("must be playable down until ace", () => {
@@ -98,7 +101,9 @@ describe("SuitRow", () => {
                 spadeRow.put(threeSpade);
                 spadeRow.put(twoSpade);
                 spadeRow.putBelow(aceSpade);
-                assert.equal(spadeRow.bottom().value(), 1)
+                assert.equal(spadeRow.bottom().value(), 1);
+                assert.equal(spadeRow.isAvailable(), false);
+                assert.throws(() => spadeRow.put(eightSpade), _.AssertionError);
             })
 
             it("increase the current top", () => {

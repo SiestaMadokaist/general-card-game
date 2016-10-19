@@ -3,12 +3,12 @@
  * define the rule for poker here
  * probably should've implement / extend Game.Base
  */
-const PP = require('./poker.play.js');
+const PP = require('./poker/play.js');
 const _ = require('lodash');
 const Pair = PP.Pair;
 const Triplet = PP.Triplet;
 const Bomb = PP.Bomb;
-const Color = PP.Color;
+const Flush = PP.Flush;
 const Straight = PP.Straight;
 const FullHouse = PP.FullHouse;
 const StraightFlush = PP.StraightFlush;
@@ -28,7 +28,7 @@ class Poker {
       plays: [
         StraightFlush,
         FullHouse,
-        Color,
+        Flush,
         Straight,
         Bomb,
         Triplet,

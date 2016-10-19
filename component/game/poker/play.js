@@ -78,7 +78,7 @@ const Straight = new PokerRule("Straight", (cards) => {
   return isStraight;
 })
 
-const Color = new PokerRule("Color", (cards) => {
+const Flush = new PokerRule("Flush", (cards) => {
   if(cards.length != 5) { return false; }
   if(cards.filter((card) => card.suit != cards[0].suit) != 0) { return false; }
   return true;
@@ -97,7 +97,7 @@ const FullHouse = new PokerRule("FullHouse", (cards) => {
 const StraightFlush = new PokerRule("StraightFlush", (cards) => {
   if(cards.length != 5) { return false; }
   if(!Straight.validatePlay(cards)) { return false; }
-  if(!Color.validatePlay(cards)) { return false; }
+  if(!Flush.validatePlay(cards)) { return false; }
   return true;
 })
 
@@ -112,7 +112,7 @@ const Pass = new PokerRule("Pass", (cards) => {
 exports.Pair = Pair;
 exports.Triplet = Triplet;
 exports.Bomb = Bomb;
-exports.Color = Color;
+exports.Flush = Flush;
 exports.Straight = Straight;
 exports.FullHouse = FullHouse;
 exports.StraightFlush = StraightFlush;

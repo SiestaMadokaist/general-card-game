@@ -10,14 +10,31 @@ class SuitRow{
     /*
      * @param suit {SUIT}
      */
-    constructor(suit){
-        this.state = {
+    constructor(suit, callbacks){
+        this._state = {
             top: CARDVALUE.SEVEN,
             bottom: CARDVALUE.SEVEN,
             available: false,
         }
         this.props = {
-            suit: suit
+            suit: suit,
+            callbacks: callbacks
+        }
+    }
+
+    onTopChanged(){
+        if(this.props.callbacks === undefined){
+            return () => undefined;
+        } else{
+            return this.props.callbacks.onTopChanged;
+        }
+    }
+
+    onBottomChanged(){
+        if(this.props.callbacks === undefined){
+            return () => undefined;
+        } else{
+            return this.props.callbacks.onBottomChanged;
         }
     }
 
@@ -30,14 +47,14 @@ class SuitRow{
     }
 
     top(){
-        if(this.state.top < 13){
+        if(this._state.top < 13){
             return Card.toCard({
-                value: this.state.top,
+                value: this._state.top,
                 suit: this.suit()
             })
         } else {
             return Card.imaginary({
-                value: this.state.top,
+                value: this._state.top,
                 suit: this.suit()
             })
         }
@@ -45,17 +62,17 @@ class SuitRow{
 
     bottom(){
         return Card.toCard({
-            value: this.state.bottom,
+            value: this._state.bottom,
             suit: this.suit()
         })
     }
 
     hasReachedKing(){
-        return this.state.top == CARDVALUE.KING
+        return this._state.top == CARDVALUE.KING
     }
 
     hasReached2(){
-        return this.state.bottom == 2;
+        return this._state.bottom == 2;
     }
 
     /*
@@ -86,7 +103,7 @@ class SuitRow{
     }
 
     isAvailable(){
-        return this.state.available;
+        return this._state.available;
     }
 
     put(card){
@@ -94,7 +111,7 @@ class SuitRow{
         _.assert(!card.isAce(), "please use putAbove / putBelow instead of just put");
         this.validateLegitPlay(card);
         if(card.isSeven()){
-            this.state.available = true;
+            this._state.available = true;
         }else if(card.isAboveSeven()){
             this.putAbove(card);
         }else if(card.isBelowSeven()){
@@ -105,28 +122,30 @@ class SuitRow{
     }
 
     topped(){
-        return this.state.top > CARDVALUE.KING;
+        return this._state.top > CARDVALUE.KING;
     }
 
     bottomed(){
-        return this.state.top < 2;
+        return this._state.bottom < 2;
     }
 
     // @params card {Card}
     putAbove(card){
         this.validateLegitPlay(card);
-        this.state.top++;
+        this._state.top++;
         if(card.isAce() && this.topped()){
-            this.state.available = false;
+            this._state.available = false;
         }
+        this.onTopChanged();
     }
 
     putBelow(card){
         this.validateLegitPlay(card);
-        this.state.bottom--;
+        this._state.bottom--;
         if(card.isAce() && this.bottomed()){
-            this.state.available = false;
+            this._state.available = false;
         }
+        this.onBottomChanged();
     }
 }
 

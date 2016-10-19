@@ -1,12 +1,12 @@
 'use strict';
 const Poker = require("../component/game/poker.js");
-const PP = require('../component/game/poker.play.js');
+const PP = require('../component/game/poker/play.js');
 const PH = require("./poker.play.hand.spec.js");
 const assert = require('assert');
 const Pair = PP.Pair;
 const Triplet = PP.Triplet;
 const Bomb = PP.Bomb;
-const Color = PP.Color;
+const Flush = PP.Flush;
 const Straight = PP.Straight;
 const FullHouse = PP.FullHouse;
 const StraightFlush = PP.StraightFlush;
@@ -93,28 +93,28 @@ describe("Poker.Play", () => {
     });
   });
 
-  describe("Color", () => {
+  describe("Flush", () => {
     const excludedHand = [
       PH.cyclicStraightFlushHand,
       PH.straightFlushHand,
       PH.colorHand
     ]
     it("doesn't accept no hand", () => {
-      assert.equal(false, Color.validatePlay(PH.noHand5));
+      assert.equal(false, Flush.validatePlay(PH.noHand5));
     });
 
     it("accept straight flush", () => {
-      assert.equal(true, Color.validatePlay(PH.straightFlushHand));
+      assert.equal(true, Flush.validatePlay(PH.straightFlushHand));
     });
 
     it("accept color hand", () => {
-      assert.equal(true, Color.validatePlay(PH.colorHand));
+      assert.equal(true, Flush.validatePlay(PH.colorHand));
     });
 
     it("doesn't accept non straight hand", () => {
-      assert.equal(false, Color.validatePlay(PH.randomHand(excludedHand)));
-      assert.equal(false, Color.validatePlay(PH.randomHand(excludedHand)));
-      assert.equal(false, Color.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Flush.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Flush.validatePlay(PH.randomHand(excludedHand)));
+      assert.equal(false, Flush.validatePlay(PH.randomHand(excludedHand)));
     });
   });
 

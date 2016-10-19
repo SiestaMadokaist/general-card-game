@@ -2,7 +2,7 @@
 const _ = require("lodash");
 const assert = require('assert');
 const Poker = require('../component/game/poker.js').Poker;
-const PR = require("../component/game/poker.play.js").PokerRule;
+const PR = require("../component/game/poker/play.js").PokerRule;
 const PH = require("./poker.play.hand.spec.js");
 
 describe("Poker", () => {

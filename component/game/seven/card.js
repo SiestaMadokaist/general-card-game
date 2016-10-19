@@ -103,6 +103,10 @@ class ImaginaryCard extends Card {
     value(){
         return 14;
     }
+
+    suit(){
+        throw new Error("for now this is error");
+    }
 }
 
 class Joker extends Card {
