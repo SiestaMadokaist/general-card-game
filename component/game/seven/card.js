@@ -119,6 +119,18 @@ class Joker extends Card {
         return true;
     }
 
+    isKing(){
+        return true;
+    }
+
+    isQueen(){
+        return true;
+    }
+
+    isJack(){
+        return true;
+    }
+
     suit(){
         throw new Error("for now this is error");
     }
@@ -169,7 +181,7 @@ class Joker extends Card {
 module.exports.fromValue = (i) => {
     if(i < 0){
         return new ImaginaryCard();
-    }else if(i < NORMAL_CARD_LIMIT && i >= 1){
+    }else if(i < NORMAL_CARD_LIMIT && i >= 0){
         const value = i % 13;
         const suit = Math.floor(i / 13);
         return new Card(value + 1, suit)

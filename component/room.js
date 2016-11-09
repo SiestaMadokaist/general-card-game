@@ -12,14 +12,14 @@ class Room {
    * TODO: validate the value;
    * TODO: still developed under the assumption that cardLimit would always be 52
    */
-  constructor(roomName, playerLimit, cardLimit, gameClass){
+  constructor(name, playerLimit, cardLimit, gameClass){
     const mutablePlayers = [];
     const deck = [];
     // this variable will be mutable by game or room
     // the plan is only room may mutate the players
     // and by doing so, the game players would also be mutated
     this.props = {
-        name: roomName,
+        name: name,
         playerLimit: playerLimit,
         gameClass: gameClass
     };

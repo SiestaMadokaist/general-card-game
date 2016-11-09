@@ -1,5 +1,6 @@
 const _ = require("lodash");
-const card = require("./card.js")
+const Card = require("./seven/card.js")
+const Room = require("../room.js")
 class Seven{
     /*
      * @params playerLimit {Integer}
@@ -13,9 +14,50 @@ class Seven{
      */
     constructor(room){
         this.props = {
-            room: room;
+            room: room
         }
     };
+
+    static initializeIO(io){
+        Seven.ROOMS = {}
+        Seven.IO = io;
+        Seven.IO.on("connection", (socket) => {
+            socket.on("join", (data) => {
+                Seven.join(data, socket)
+            })
+            socket.on("disconnect", (data) => {
+                Seven.disconnect(data, socket)
+            })
+        })
+    }
+
+    /*
+     * @params data {Object.room_id => String}
+     * @params socket {Socket}
+     */
+    static join(data, socket){
+        const room = Seven.find_or_create(data);
+        const player = Seven.find_or_create(socket.id)
+        socket.join(room.name());
+    }
+
+
+    /*
+     * @params data {Object}
+     * data .room_id :required
+     * data .playerLimit :required
+     * data .cardLimit :required
+     * data .gameClass :required
+     */
+    static find_or_create(data){
+        const room = Seven.ROOMS[data.room_id];
+        if(room === undefined){
+            return new Room(data.room_id, data.playerLimit, data.cardLimit, data.gameClass)
+        } else {
+            return room
+        }
+    }
+
 
     onPlayerAdded(){
         if(this.props.callbacks === undefined){
@@ -61,3 +103,5 @@ class Seven{
     start(){
     }
 }
+
+module.exports = Seven

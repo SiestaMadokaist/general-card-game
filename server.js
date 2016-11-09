@@ -1,22 +1,39 @@
-var server = require('express')();
-var http = require('http').Server(server);
-var io = require('socket.io')(http);
-var path = require('path');
-var config = require('./config.js');
-// var specs = require('./spec/spec.js');
-var port = config.port;
+//	Customization
+var appPort = 16558;
 
-server.get('/', function(req, res){
-    res.sendFile(path.join(__dirname, './view/index.html'));
+// Librairies
+var express = require('express'), app = express();
+var http = require('http')
+  , server = http.createServer(app)
+  , io = require('socket.io').listen(server);
+
+
+var jade = require('jade');
+
+const Seven = require("./component/game/seven")
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.set("view options", { layout: false });
+
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', function(req, res){
+  res.render('home.jade');
 });
 
-io.of("/namespace").on('connection', function(socket){
-    console.log(socket);
-    socket.on('chat message', function(msg){
-        io.emit('chat message', msg);
-    });
-});
+Seven.initializeIO(io.of("/game.seven"))
+server.listen(appPort);
 
-http.listen(port, function(){
-    console.log('listening on port 3000...');
+console.log("Server listening on port " + appPort);
+io.of("/test").on('connection', function (socket) { // First connection
+	socket.on('message', function (data) { // Broadcast the message to all
+        io.of("/test").emit("room-of-true").emit("message", data);
+	});
+    socket.on("join", function(data){
+        console.log(`joining ${socket.id} into ${data.room}`);
+        socket.join(data.room);
+    })
+	socket.on('disconnect', function () { // Disconnection of the client
+	});
 });
