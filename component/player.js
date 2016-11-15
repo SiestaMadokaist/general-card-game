@@ -1,45 +1,50 @@
 'use strict';
+const $assert = require("underscore.assert");
 class Player {
-    constructor(name, room){
-        this.state = {
-            cards: []
-        }
-        this.props = {
-            name: name,
-            room: room
-        }
-        this.memoized_props = {
-            id: this.id(),
-        }
+  constructor(name, socket){
+    this.props = {
+      name: name,
+      socket: socket
     }
+    this.state = {
+      isActive: false,
+      cards: [],
+      room: undefined
+    }
+  }
 
-    /*
-     * function alias for identifier;
-     */
-    id(){
-        if(this.props == undefined || this.props.id == undefined){
-            return Math.floor(Math.random() * 1000000)
-        }else{
-            return this.props.id;
-        }
-    }
+  /*
+   * @params room {Room}
+   */
+  join(room){
+    $assert.assert(this.room() == undefined, `already joined ${this.room()}`);
+    this.state.room = room;
+    room.addPlayer(this);
+  }
 
-    room(){
-        return this.props.room;
-    }
+  room(){
+    return this.state.room;
+  }
 
-    /**
-     * @params cardIndexs {Array<Integer>}
-     */
-    play(cardIndexs){
-        var playedCards = cardIndexs.map((i) => this.state.cards[i]);
-        this.props.room.play(this, playedCards);
-    }
+  cards(){
+    return this.state.cards;
+  }
 
-    cards(){
-        return this.state.cards;
-    }
+  /**
+   * @params cardIndexs {Array<Integer>}
+   * @params kwargs {Object} any additional parameter
+   * index of card in this players hand
+   */
+  play(cardIndexs, kwargs){
+    $assert.assert(this.isActive(), "status still inactive");
+    var playedCards = cardIndexs.map((i) => this.state.cards[i]);
+    this.room().play(this, playedCards, kwargs);
+  }
+
+  addCard(card){
+    this.state.cards.push(card);
+  }
 
 }
 
-exports.Player = Player;
+module.exports = Player;

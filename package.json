@@ -6,7 +6,8 @@
   },
   "jest": {
     "coverageDirectory": "coverage/",
-    "coverageReporters": ["html"],
+    "rootDir": "./",
+    "coverageReporters": ["html", "text"],
     "verbose": true
   },
   "description": "terminal based suits card game",

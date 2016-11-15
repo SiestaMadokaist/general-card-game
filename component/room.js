@@ -2,60 +2,55 @@
 const $assert = require("underscore.assert");
 const _ = require("lodash");
 class Room {
-  /**
-   * @params roomName {String}
-   * @params playerLimit {Integer}
-   * amount of player
-   * game won't start until this room had that much player
-   * @params cardLimit {Integer}
-   * 52 for a game without joker, 54 for two joker.
-   * TODO: validate the value;
-   * TODO: still developed under the assumption that cardLimit would always be 52
+  /*
+   * @param gameClass {Class<GAME>}
+   * probably should focus handle IO class instead
    */
-  constructor(name, playerLimit, cardLimit, gameClass){
-    const mutablePlayers = [];
-    const deck = [];
-    // this variable will be mutable by game or room
-    // the plan is only room may mutate the players
-    // and by doing so, the game players would also be mutated
+  constructor(gameClass, roomName, playerLimit, roomSocket){
     this.props = {
-        name: name,
-        playerLimit: playerLimit,
-        gameClass: gameClass
-    };
-    this.memoized_props = {
-        game: undefined
-    };
+      roomName: roomName,
+      playerLimit: playerLimit,
+      gameClass: gameClass,
+      roomSocket: roomSocket
+    }
     this.state = {
-      players: mutablePlayers,
-      cardLimit: cardLimit,
-    };
+      activePlayerId: undefined,
+      game: undefined,
+      players: [],
+      decks: undefined
+    }
   }
 
-  start(){
-      $assert(this.players().length == this.props.playerLimit);
-      const players = this.players();
-      const initialDeck = this.game().initialDeck();
-      const divNumber = initialDeck.length / players;
-      const cardPickerCallback = (n) => {
-           _(initialDeck)
-              .zip(_.range(initialDeck.length()))
-              .filter((card, i) => i % players.length() == n)
-              .map((card, i) => card)
-              .value()
-      }
-      const playerCards = _.range(players.length())
+  gameClass(){
+    return this.props.gameClass;
+  }
+
+  // @params kwargs {Object}
+  // kwargs.cardLimit: {Integer}
+  // e.g: 52 or 54
+  start(kwargs){
+    $assert(this.players().length == this.playerLimit());
+    const GameConstructor = this.gameClass();
+    const game = new GameConstructor(this);
+    this.state.game = game;
+    game.start(kwargs);
+    // TODO: handle socket connection as well here
+  }
+
+  // @params kwargs {Object}
+  // any additional parameters that needs to be passed to play this game
+  play(player, card, kwargs){
+    $assert(player == this.activePlayer());
+    this.game().play(this.activePlayer(), card, kwargs);
+    // TODO: need socket
   }
 
   game(){
-      if(this.memoized_props.game === undefined){
-          this.memoized_props.game = new this.props.gameClass(this);
-      }
-      return this.memoized_props.game;
+    return this.state.game;
   }
 
-  name(){
-    return this.props.name;
+  roomName(){
+    return this.props.roomName;
   }
 
   playerLimit(){
@@ -63,16 +58,18 @@ class Room {
   }
 
   players(){
-      return this.state.players;
+    return this.state.players;
   }
 
-  addPlayer(playerName){
-      const player = new Player(playerName, this)
-      this.state.players.push(player);
+  addPlayer(player){
+    $assert(this.players().length < this.playerLimit());
+    $assert(this.players().filter((p) => p == player).length == 0)
+    this.state.players.push(player);
+    // TODO: handle socket connection here
   }
 
   amountOfPlayerToWait(){
-    return this.state.playerLimit - this.state.players.length;
+    return this.playerLimit() - this.players().length;
   }
 
   isWaitingForPlayer(){
@@ -81,4 +78,4 @@ class Room {
 
 }
 
-exports.Room = Room;
+module.exports = Room;

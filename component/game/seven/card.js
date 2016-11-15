@@ -6,208 +6,227 @@ const SUIT = require("./suit.js");
 const NORMAL_CARD_LIMIT = 52;
 
 const CARDVALUE = {
-    SEVEN: 7,
-    JACK: 11,
-    QUEEN: 12,
-    KING: 13,
-    ACE: 1
+  SEVEN: 7,
+  JACK: 11,
+  QUEEN: 12,
+  KING: 13,
+  ACE: 1
 }
 
 class Card{
-    constructor(value, suit){
-        this.props = {
-            value: value,
-            suit: suit
-        }
+  constructor(value, suit){
+    this.props = {
+      value: value,
+      suit: suit
     }
+  }
 
-    value(){
-        return this.props.value;
-    }
+  value(){
+    return this.props.value;
+  }
 
-    suit(){
-        return this.props.suit;
-    }
+  suit(){
+    return this.props.suit;
+  }
 
-    suitName(){
-        return SUIT.inverse(this.suit());
-    }
+  suitName(){
+    return SUIT.inverse(this.suit());
+  }
 
-    toString(){
-        return `{value: ${this.value()}, suit: ${this.suitName()}}`;
-    }
+  toString(){
+    return `{value: ${this.value()}, suit: ${this.suitName()}}`;
+  }
 
-    /*
-     * @params card {Card}
-     * (this card is the next card after `card`)
-     */
-    isSuccessor(card){
-        if(card.suit() !== this.suit()){
-            return false;
-        }else if(this.isAce() && card.isKing()){
-            return true;
-        }else if(this.value() != card.value() + 1){
-            return false;
-        }
-        return true;
+  isSevenSpade(){
+    if(this.suit() != SUIT.SPADE){
+      return false;
     }
+    return this.isSeven();
+  }
 
-    /*
-     * @params card {Card}
-     */
-    isPredecessor(card){
-        if(card.suit() !== this.suit()){
-            return false;
-        }else if(this.value() != card.value() - 1){
-            return false;
-        }
-        return true
+  /*
+   * @params card {Card}
+   * (this card is the next card after `card`)
+   */
+  isSuccessor(card){
+    if(card.suit() !== this.suit()){
+      return false;
+    }else if(this.isAce() && card.isKing()){
+      return true;
+    }else if(this.value() != card.value() + 1){
+      return false;
     }
+    return true;
+  }
 
-    isJoker(){
-        return false;
+  /*
+   * @params card {Card}
+   */
+  isPredecessor(card){
+    if(card.suit() !== this.suit()){
+      return false;
+    }else if(this.value() != card.value() - 1){
+      return false;
     }
+    return true
+  }
 
-    isBelowSeven(){
-        return this.value() < CARDVALUE.SEVEN;
-    }
+  isJoker(){
+    return false;
+  }
 
-    isAboveSeven(){
-        return this.value() > CARDVALUE.SEVEN;
-    }
+  isBelowSeven(){
+    return this.value() < CARDVALUE.SEVEN;
+  }
 
-    isAce(){
-        return this.value() == CARDVALUE.ACE;
-    }
+  isAboveSeven(){
+    return this.value() > CARDVALUE.SEVEN;
+  }
 
-    isSeven(){
-        return this.value() == CARDVALUE.SEVEN;
-    }
+  isAce(){
+    return this.value() == CARDVALUE.ACE;
+  }
 
-    isJack(){
-        return this.value() == CARDVALUE.JACK;
-    }
+  isSeven(){
+    return this.value() == CARDVALUE.SEVEN;
+  }
 
-    isQueen(){
-        return this.value() == CARDVALUE.QUEEN;
-    }
+  isJack(){
+    return this.value() == CARDVALUE.JACK;
+  }
 
-    isKing(){
-        return this.value() == CARDVALUE.KING;
-    }
+  isQueen(){
+    return this.value() == CARDVALUE.QUEEN;
+  }
+
+  isKing(){
+    return this.value() == CARDVALUE.KING;
+  }
 
 
 }
 
 class ImaginaryCard extends Card {
-    value(){
-        return 14;
-    }
+  value(){
+    return 14;
+  }
 
-    suit(){
-        throw new Error("for now this is error");
-    }
+  isSevenSpade(){
+    return false;
+  }
+
+  suit(){
+    throw new Error("for now this is error");
+  }
 }
 
 class Joker extends Card {
 
-    value(){
-        throw new Error("for now this is error");
-    }
+  value(){
+    throw new Error("for now this is error");
+  }
 
-    isAce(){
-        return true;
-    }
+  isSevenSpade(){
+    return false;
+  }
 
-    isKing(){
-        return true;
-    }
+  isAce(){
+    return true;
+  }
 
-    isQueen(){
-        return true;
-    }
+  isKing(){
+    return true;
+  }
 
-    isJack(){
-        return true;
-    }
+  isQueen(){
+    return true;
+  }
 
-    suit(){
-        throw new Error("for now this is error");
-    }
+  isJack(){
+    return true;
+  }
 
-    /*
-     * @param _ {Card}
-     * though it doesn`t matter
-     */
-    isSuccessor(_){
-        return true;
-    }
+  suit(){
+    throw new Error("for now this is error");
+  }
 
-    /*
-     * @param _ {Card}
-     * though it doesn`t matter
-     */
-    isPredecessor(_){
-        return true
-    }
+  /*
+   * @param _ {Card}
+   * though it doesn`t matter
+   */
+  isSuccessor(_){
+    return true;
+  }
 
-    isJoker(){
-        return true;
-    }
+  /*
+   * @param _ {Card}
+   * though it doesn`t matter
+   */
+  isPredecessor(_){
+    return true
+  }
 
-    /*
-     * not really usefull but, maybe will be usefull
-     */
-    isSeven(){
-        return false;
-    }
+  isJoker(){
+    return true;
+  }
 
-    /*
-     * ensuring the game doesn`t become random when joker is put down
-     */
-    isBelowSeven(){
-        throw `Joker card can not be checked whether it is below or above seven`;
-    }
+  /*
+   * not really usefull but, maybe will be usefull
+   */
+  isSeven(){
+    return false;
+  }
 
-    isAboveSeven(){
-        this.isBelowSeven();
-        // lazy yo
-    }
+  /*
+   * ensuring the game doesn`t become random when joker is put down
+   */
+  isBelowSeven(){
+    throw `Joker card can not be checked whether it is below or above seven`;
+  }
+
+  isAboveSeven(){
+    this.isBelowSeven();
+    // lazy yo
+  }
+
+  toValue(){
+    return (this.suit() * 13) + this.value()
+  }
 
 }
 
 
 
 module.exports.fromValue = (i) => {
-    if(i < 0){
-        return new ImaginaryCard();
-    }else if(i < NORMAL_CARD_LIMIT && i >= 0){
-        const value = i % 13;
-        const suit = Math.floor(i / 13);
-        return new Card(value + 1, suit)
-    }else{
-        return new Joker();
-    }
+  if(i < 0){
+    return new ImaginaryCard();
+  }else if(i < NORMAL_CARD_LIMIT && i >= 0){
+    const value = i % 13;
+    const suit = Math.floor(i / 13);
+    return new Card(value + 1, suit)
+  }else{
+    return new Joker();
+  }
 }
 
 module.exports.toCard = (cardObj) => {
-    const value = cardObj.value;
-    const suit = cardObj.suit;
-    _.assert(value <= 13, ".value cant be greater than 13");
-    _.assert(value >= 1, ".value cant be lower than 1");
-    _.assert(suit <= SUIT.MAX, ".that`s not a valid suit")
-    _.assert(suit >= SUIT.MIN, ".that`s not a valid suit")
-    return exports.fromValue(value - 1 + (suit * 13));
+  const value = cardObj.value;
+  const suit = cardObj.suit;
+  _.assert(value <= 13, ".value cant be greater than 13");
+  _.assert(value >= 1, ".value cant be lower than 1");
+  _.assert(suit <= SUIT.MAX, ".that`s not a valid suit")
+  _.assert(suit >= SUIT.MIN, ".that`s not a valid suit")
+  return exports.fromValue(value - 1 + (suit * 13));
 }
 
 module.exports.imaginary = (cardObj) => {
-    const value = cardObj.value;
-    const suit = cardObj.suit;
-    _.assert(value <= 14, ".value cant be greater than 13");
-    _.assert(value >= 1, ".value cant be lower than 1");
-    _.assert(suit <= SUIT.MAX, ".that`s not a valid suit")
-    _.assert(suit >= SUIT.MIN, ".that`s not a valid suit")
-    return exports.fromValue(-1);
+  const value = cardObj.value;
+  const suit = cardObj.suit;
+  _.assert(value <= 14, ".value cant be greater than 13");
+  _.assert(value >= 1, ".value cant be lower than 1");
+  _.assert(suit <= SUIT.MAX, ".that`s not a valid suit")
+  _.assert(suit >= SUIT.MIN, ".that`s not a valid suit")
+  return exports.fromValue(-1);
 }
 
 module.exports.CARDVALUE = CARDVALUE;
