@@ -1,6 +1,15 @@
 'use strict';
 const $assert = require("underscore.assert");
+const _PLAYER = {};
 class Player {
+
+  static fetch(options){
+    if(_PLAYER[options.playerName] == undefined){
+      _PLAYER[options.playerName] = new Player(options.playerName, options.playerSocket);
+    }
+    return _PLAYER[options.playerName];
+  }
+
   constructor(name, socket){
     this.props = {
       name: name,
@@ -53,6 +62,10 @@ class Player {
 
   addCard(card){
     this.state.cards.push(card);
+  }
+
+  name(){
+    return this.props.name;
   }
 
 }

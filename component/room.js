@@ -1,22 +1,31 @@
 'use strict';
 const $assert = require("underscore.assert");
 const _ = require("lodash");
+const _ROOM = {};
 class Room {
+
+  static fetch(options){
+    if(_ROOM[options.roomName] == undefined){
+      _ROOM[options.roomName] = new Room(options.game, options.roomName, options.playerLimit)
+    }
+    return _ROOM[options.roomName]
+  }
+
   /*
    * @param gameClass {Class<GAME>}
    * probably should focus handle IO class instead
    */
-  constructor(gameClass, roomName, playerLimit, roomSocket){
+  constructor(gameClass, roomName, playerLimit){
     this.props = {
       roomName: roomName,
       playerLimit: playerLimit,
       gameClass: gameClass,
-      roomSocket: roomSocket
     }
     this.state = {
       activePlayerId: undefined,
       game: undefined,
       players: [],
+      started: false,
       decks: undefined
     }
   }
@@ -30,11 +39,17 @@ class Room {
   // e.g: 52 or 54
   start(kwargs){
     $assert(this.players().length == this.playerLimit());
+    $assert(!this.started(), "game has alreday started");
     const GameConstructor = this.gameClass();
     const game = new GameConstructor(this);
     this.state.game = game;
     game.start(kwargs);
+    this.state.started = true;
     // TODO: handle socket connection as well here
+  }
+
+  started(){
+    return this.state.started;
   }
 
   // @params kwargs {Object}
