@@ -39,9 +39,13 @@ class Room {
 
   // @params kwargs {Object}
   // any additional parameters that needs to be passed to play this game
-  play(player, card, kwargs){
-    $assert(player == this.activePlayer());
-    this.game().play(this.activePlayer(), card, kwargs);
+  play(player, cards, kwargs){
+    this.game().play(player, cards, kwargs);
+    // TODO: need socket
+  }
+
+  playOne(player, card, kwargs){
+    this.game().play(player, card, kwargs);
     // TODO: need socket
   }
 

@@ -33,10 +33,6 @@ class Card{
     return SUIT.inverse(this.suit());
   }
 
-  toString(){
-    return `{value: ${this.value()}, suit: ${this.suitName()}}`;
-  }
-
   isSevenSpade(){
     if(this.suit() != SUIT.SPADE){
       return false;
@@ -103,6 +99,9 @@ class Card{
     return this.value() == CARDVALUE.KING;
   }
 
+  toString(){
+    return `${this.suitName()}(${this.value()})`
+  }
 
 }
 
@@ -124,6 +123,10 @@ class Joker extends Card {
 
   value(){
     throw new Error("for now this is error");
+  }
+
+  toString(){
+    return "Joker";
   }
 
   isSevenSpade(){

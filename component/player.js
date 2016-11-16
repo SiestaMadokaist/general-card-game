@@ -9,6 +9,7 @@ class Player {
     this.state = {
       isActive: false,
       cards: [],
+      closedCards: [],
       room: undefined
     }
   }
@@ -17,7 +18,7 @@ class Player {
    * @params room {Room}
    */
   join(room){
-    $assert.assert(this.room() == undefined, `already joined ${this.room()}`);
+    $assert(this.room() == undefined, `already joined ${this.room()}`);
     this.state.room = room;
     room.addPlayer(this);
   }
@@ -35,10 +36,19 @@ class Player {
    * @params kwargs {Object} any additional parameter
    * index of card in this players hand
    */
-  play(cardIndexs, kwargs){
-    $assert.assert(this.isActive(), "status still inactive");
-    var playedCards = cardIndexs.map((i) => this.state.cards[i]);
-    this.room().play(this, playedCards, kwargs);
+  playOne(cardIndex, kwargs){
+    var playedCards = this.cards()[cardIndex];
+    this.room().playOne(this, playedCards, kwargs);
+  }
+
+  close(cardIndex){
+    this.state.closedCards.push(this.cards()[cardIndex])
+  }
+
+  removeCard(card){
+    const idx = this.cards().indexOf(card);
+    $assert(idx != -1, "card to remove not found");
+    this.state.cards.splice(idx, 1);
   }
 
   addCard(card){

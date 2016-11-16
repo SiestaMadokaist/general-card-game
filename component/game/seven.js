@@ -41,6 +41,10 @@ class Seven{
     }
   }
 
+  playerLimit(){
+    return this.room().playerLimit();
+  }
+
   static isSevenSpadeOwner(player){
     return player
       .cards()
@@ -99,17 +103,29 @@ class Seven{
    * kwargs.direction == -1 => put on below
    */
   play(player, card, kwargs){
-    $assert(player == this.activePlayer(), "not your turn yet");
-    $assert(player.cards.filter((card) => card == card).count > 0, "you dont have that card wtf");
-    $assert(kwargs.direction == 0 || kwargs.direction == 1 || kwargs.direction == -1);
-    const suitrow = SUIT.inverse(kwargs.suit);
-    if(kwargs.direction == 0){
-      suitrow.put(card);
-    }else if(kwargs.direction == 1){
-      suitrow.putAbove(card);
-    }else if(kwargs.direction == -1){
-      suitrow.putBelow(card);
+    if(kwargs.suit == -1){
+      // TODO: ensure no available move
+      // player.close(player.cards.indexOf(card))
+    }else{
+      $assert(player == this.activePlayer(), "not your turn yet");
+      $assert(player.cards().filter((c) => card == c).length > 0, "you dont have that card wtf");
+      $assert(kwargs.direction == 0 || kwargs.direction == 1 || kwargs.direction == -1);
+      const suitrow = this.suitrow(kwargs.suit);
+      $assert(suitrow != undefined, "no such suitrow found")
+      if(kwargs.direction == 0){
+        suitrow.put(card);
+      }else if(kwargs.direction == 1){
+        suitrow.putAbove(card);
+      }else if(kwargs.direction == -1){
+        suitrow.putBelow(card);
+      }
     }
+    player.removeCard(card)
+    this.setNextPlayerAsActive();
+  }
+
+  suitrow(suitId){
+    return this.state.suitrow[SUIT.inverse(suitId)]
   }
 }
 
