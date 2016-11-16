@@ -2,7 +2,8 @@
   "name": "terminal-card",
   "version": "0.0.1",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "debug": "node debug --harmony ./node_modules/jest/bin/jest.js --coverage --runInBand"
   },
   "jest": {
     "coverageDirectory": "coverage/",
