@@ -5,7 +5,7 @@ import { SuitRowActions } from 'actions/Seven.SuitRowActions';
 import { connect } from 'react-redux';
 
 @connect(state => ({ row: state.row }))
-export default class SuitRow extends React.Component {
+class SuitRow extends React.Component {
   render(){
     const { rows, dispatch, rowName } = this.props;
     const row = rows[rowName];
@@ -17,3 +17,5 @@ export default class SuitRow extends React.Component {
     )
   }
 }
+
+export default SuitRow;

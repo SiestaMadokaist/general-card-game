@@ -10,13 +10,11 @@ import { connect } from 'react-redux';
 @connect(state => ({todos: state.todos}))
 class Home extends React.Component {
   render(){
-    const { rows, dispatch } = this.props;
+    const { todos, dispatch } = this.props;
     return (
-        <div id="suitrow-list">
-          <SuitRow rowName="DIAMOND" {...bindActionCreators(SuitRowActions, dispatch)} rows={rows}/>
-          <SuitRow rowName="CLOVER" {...bindActionCreators(SuitRowActions, dispatch)} rows={rows} />
-          <SuitRow rowName="HEART" {...bindActionCreators(SuitRowActions, dispatch)} rows={rows} />
-          <SuitRow rowName="SPADE" {...bindActionCreators(SuitRowActions, dispatch)} rows={rows} />
+        <div id="todo-list">
+          <TodosView todos={todos} {...bindActionCreators(TodoActions, dispatch)} />
+          <TodosForm {...bindActionCreators(TodoActions, dispatch)} />
         </div>
     );
   }
