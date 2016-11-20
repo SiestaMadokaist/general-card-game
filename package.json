@@ -6,6 +6,7 @@
     "dev": "npm run start & webpack-dev-server --progress --color",
     "build": "NODE_ENV=production webpack --progress --color -p --config webpack.prod.config.js",
     "test": "jest --coverage",
+    "devDebug": "NODE_PATH=$NODE_PATH:/shared node debug --harmony .",
     "debug": "node debug --harmony ./node_modules/jest/bin/jest.js --coverage --runInBand"
   },
   "jest": {
