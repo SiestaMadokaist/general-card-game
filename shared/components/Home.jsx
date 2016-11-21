@@ -1,8 +1,8 @@
 import React from 'react';
 import TodosView from './TodosView';
 import TodosForm from './TodosForm';
-import SuitRow from './Seven.SuitRow.jsx';
-import SuitRowActions  from 'actions/Seven.SuitrowActions';
+import SuitRow from './Seven/SuitRowView';
+import SuitRowActions  from 'actions/Seven/SuitRowActions';
 import { bindActionCreators } from 'redux';
 import { TodoActions } from 'actions';
 import { connect } from 'react-redux';

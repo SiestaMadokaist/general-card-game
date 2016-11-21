@@ -18,7 +18,6 @@ Object
     initialState[key] = fromJS(initialState[key]);
   })
 
-console.log(reducers);
 const reducer = combineReducers(reducers);
 const store = createStore(reducer, initialState);
 
