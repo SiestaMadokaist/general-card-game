@@ -29,6 +29,7 @@ module.exports = {
     new webpack.NoErrorsPlugin()
   ],
   devtool: 'inline-source-map',
+  debug: true,
   devServer: {
     hot: true,
     proxy: {

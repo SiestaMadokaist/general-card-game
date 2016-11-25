@@ -1,8 +1,15 @@
 exports.REPLACE = "SEVEN.SUITROW.REPLACE"
-exports.replace  = function replace(suit, state){
+/*
+ * @params suit {Integer}
+ * 0 => Diamond
+ * 1 => Clover
+ * 2 => Hearts
+ * 3 => Spade
+ */
+exports.replace  = function replace(suit, newState){
   return {
-    type: SUITROW_SET,
+    type: REPLACE,
     suit,
-    state
+    newState
   }
 }

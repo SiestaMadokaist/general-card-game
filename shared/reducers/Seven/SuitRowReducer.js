@@ -1,18 +1,24 @@
 import Immutable from 'immutable';
-import { SuitRowFactory } from './SuitRowFactory';
+import { SuitRowFactory, DIAMOND, CLOVER, HEARTS, SPADE } from './SuitRowFactory';
 import { REPLACE } from "actions/Seven/SuitRowActions";
 
 const defaultState = new Immutable.List()
-  .push(SuitRowFactory.construct(0))
-  .push(SuitRowFactory.construct(1))
-  .push(SuitRowFactory.construct(2))
-  .push(SuitRowFactory.construct(3))
+  .push(SuitRowFactory.construct(DIAMOND))
+  .push(SuitRowFactory.construct(CLOVER))
+  .push(SuitRowFactory.construct(HEARTS))
+  .push(SuitRowFactory.construct(SPADE))
 
+  /*
+   * @params action {Object}
+   * @params action.type {String}
+   * @params action.suit {Integer}
+   * @params action.newState {SuitRow}
+   */
 export default function suitrowReducer(state = defaultState, action){
   if(action.type !== REPLACE){
     return state;
   }else{
     const targetSuit = action.suit;
-    return state;
+    return state.set(targetSuit, action.newState)
   }
 }

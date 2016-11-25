@@ -7,7 +7,6 @@ class SuitRowFactory {
     })
   }
 
-
   static suits(){
     return ["DIAMOND", "CLOVER", "HEARTS", "SPADE"];
   }
@@ -27,5 +26,9 @@ class SuitRowFactory {
 
 module.exports = {
   ImmutableDefault: Immutable.fromJS(SuitRowFactory.construct(3)),
-  SuitRowFactory: SuitRowFactory
+  SuitRowFactory: SuitRowFactory,
+  DIAMOND: 0,
+  CLOVER: 1,
+  HEARTS: 2,
+  SPADE: 3
 }

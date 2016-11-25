@@ -1,13 +1,17 @@
 const SET = "SEVEN.PLAYER.HAND.SET";
 const INITIALIZE = "SEVEN.PLAYER.HAND.INITIALIZE";
 
-export function initialize(playerCount){
+exports.SET = SET;
+exports.INITIALIZE = INITIALIZE;
+
+exports.initialize = function initialize(playerCount){
   return {
     playerCount,
     type: INITIALIZE
   }
 }
-export function set(playerId, availableCount, closedCount, values){
+
+exports.set = function set(playerId, availableCount, closedCount, values){
   return {
     playerId,
     availableCount,
