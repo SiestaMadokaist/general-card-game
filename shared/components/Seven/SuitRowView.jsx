@@ -9,10 +9,12 @@ class SuitRowView extends React.Component {
   render(){
     const { row } = this.props;
     return (
-        <div className="suitrow">
-          <div className="suit-name">{SRF.suitName(row)}</div>
-          <div className="suit-top">{row.get("top")}</div>
-          <div className="suit-name">{row.get("bottom")}</div>
+        <div className="seven-suitrow">
+          <div className="seven-suitrow-center">
+            <div className="suit-name">{SRF.suitName(row)}</div>
+            <div className="suit-top">top: {row.get("top")}</div>
+            <div className="suit-name">bottom: {row.get("bottom")}</div>
+          </div>
         </div>
     )
   }

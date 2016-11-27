@@ -19,6 +19,10 @@ class SuitRowFactory {
     return this.suitInverse(suitrow.get("suit"));
   }
 
+  static inverseEnum(i){
+    return this.suits()[i];
+  }
+
   static validSuit(msuitrow){
     return this.suitName(msuitrow) !== undefined;
   }

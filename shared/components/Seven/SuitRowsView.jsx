@@ -10,7 +10,7 @@ class SuitRowsView extends React.Component {
   render(){
     const { dispatch, suitrows } = this.props;
     return (
-        <div id="suitrows">
+        <div className="seven-suitrows">
           {
             suitrows.map((row, index) => {
               return (
@@ -18,6 +18,7 @@ class SuitRowsView extends React.Component {
               )
             })
           }
+          <div className="float-clear"></div>
         </div>
     )
   }

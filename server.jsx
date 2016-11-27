@@ -10,10 +10,15 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import * as reducers from 'reducers';
 import routes from 'routes';
+import { cssPath } from 'config';
+import path from 'path';
 // import http from 'http';
 
 const app = express();
 
+const PROJECT_ROOT = path.resolve(__dirname, "..");
+const ASSETS_ROOT = path.join(PROJECT_ROOT, "public/assets");
+app.use("/static", express.static("public"));
 app.use((req, res) => {
   const location = createLocation(req.url);
   const reducer = combineReducers(reducers);
@@ -42,6 +47,7 @@ app.use((req, res) => {
       <html>
       <head>
         <title>Ramadocard-game</title>
+        <link href=${cssPath} rel="stylesheet" type="text/css">
         <script type="application/javascript">
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
         </script>

@@ -3,22 +3,20 @@ import assert from 'underscore.assert';
 
 class PlayerHand {
   /*
-   * @params availableCount [Integer]
-   * @params closedCount [Integer]
+   * @params playableCount {Integer}
+   * @params closedCount {Integer}
+   * @params closedCards = {Immutable.List}
    */
-  constructor(availableCount = 0, closedCount = 0, closedCards = new Immutable.List()){
-    this.props = {
-      availableCount,
-      closedCount,
-      value
-    }
-  }
+  static construct(playableCount, closedCount, closedCards = new Immutable.List()){
+    return Immutable.fromJS({
+      playableCount, closedCount, closedCards
+    })
 }
 
-const defaultState = new Immutable.List()
-  .concat(new PlayerHand())
-  .concat(new PlayerHand())
-  .concat(new PlayerHand())
+const defaultState = Immutable.List()
+  .concat(PlayerHand.construct(0, 0))
+  .concat(PlayerHand.construct(0, 0))
+  .concat(PlayerHand.construct(0, 0))
 
 export default function playerHandReducer(state = defaultState, action){
   if(action.type == INITIALIZE){
@@ -37,5 +35,3 @@ export default function playerHandReducer(state = defaultState, action){
     return state;
   }
 }
-
-
