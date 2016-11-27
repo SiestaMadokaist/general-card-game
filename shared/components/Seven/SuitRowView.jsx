@@ -9,7 +9,7 @@ class SuitRowView extends React.Component {
   render(){
     const { row } = this.props;
     return (
-        <div className="seven-suitrow">
+        <div className="seven-suitrow" data-suit-name={SRF.suitName(row)}>
           <div className="seven-suitrow-center">
             <div className="suit-name">{SRF.suitName(row)}</div>
             <div className="suit-top">top: {row.get("top")}</div>

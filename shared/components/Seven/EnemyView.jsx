@@ -5,8 +5,9 @@ export default class EnemyView extends React.Component {
     const { enemy } = this.props;
     return (
         <div className="seven-enemy-view">
-          <div>{enemy.get("playableCount")}</div>
-          <div>{enemy.get("closedCount")}</div>
+          <div>name: {enemy.get("playerName")}</div>
+          <div>cards: {enemy.get("playableCount")}</div>
+          <div>closed: {enemy.get("closedCount")}</div>
         </div>
     )
   }

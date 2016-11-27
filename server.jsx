@@ -47,6 +47,7 @@ app.use((req, res) => {
       <html>
       <head>
         <title>Ramadocard-game</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href=${cssPath} rel="stylesheet" type="text/css">
         <script type="application/javascript">
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};

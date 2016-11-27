@@ -5,7 +5,6 @@ import { imageHost } from 'config';
 
 class Card {
   static fromMap(map){
-    console.log(map);
     return new Card(map.get("suit"), map.get("value"))
   }
 
