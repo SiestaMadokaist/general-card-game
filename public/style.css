@@ -1,15 +1,33 @@
+body {
+  background: #336;
+  height: 100%;
+  width: 100%;
+}
+
+div#react-view {
+  height: 100%;
+  width: 100%;
+}
+
+div#app-view {
+  height: 100%;
+  width: 100%;
+}
+
+div.seven-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.available-card {
+  height: 100%;
+  width: 14px;
+  min-height: 1px;
+  float: left;
+}
+
 div.seven-card {
   z-index: 100;
-}
-
-div.seven-left-view {
-  width: 10%;
-  float: left;
-}
-
-div.seven-mid-view {
-  width: 65%;
-  float: left;
 }
 
 div.seven-right-view {
@@ -17,29 +35,90 @@ div.seven-right-view {
   float: left;
 }
 
-div.chat-box {
-  margin-left: 10px;
-  height: 400px;
-  background-color: #ff0000;
+div.seven-left-view {
+  width: 75%;
+  height: 350px;
+  float: left;
+}
+
+div.seven-top-view {
+  max-height: 50px;
+  margin-bottom: 10px;
+}
+
+div.seven-top-view > div.seven-enemies-view {
+  height: 100%;
+}
+
+div.seven-top-view > div.seven-enemies-view > div.seven-enemy-view {
+  float: left;
+  width: 29.6%;
+  padding-left: 2%;
+  margin-left: 0.5%;
+  margin-top: 1px;
+  margin-right: 2%;
+  padding: 0.2%;
+  color: #ddf;
+  border: 1px black solid;
+  background-color: #333;
+  overflow: hidden;
+  position: relative;
+}
+
+div.seven-top-view > div.seven-enemies-view > div.seven-enemy-view > span {
+  vertical-align: bottom;
+  font-size: 1.4em;
+  float: left;
+  padding-left: 1%;
+}
+
+div.seven-top-view > div.seven-enemies-view > div.seven-enemy-view > .player-name {
+  width: 60%;
+}
+
+div.seven-top-view > div.seven-enemies-view > div.seven-enemy-view > .available-card {
+  height: 100%;
+  background-color: #4d4;
+  border-radius: 5px;
+  position: relative;
+  background-size: 8px 8px;
+  width: 4%;
+  margin-left: 2%;
+  content: "";
+}
+
+div.seven-top-view > div.seven-enemies-view > div.seven-enemy-view > .closed-card {
+  height: 100%;
+  background-color: #0dd;
+  border-radius: 5px;
+  position: relative;
+  opacity: 0.4;
+  width: 4%;
+  margin-left: 2%;
+  content: "";
+}
+
+div.seven-left-view > div.seven-suitrows {
+  height: 100%;
+}
+
+div.seven-left-view > div.seven-left-separator {
   width: 100%;
-}
-
-div.chat-box > ul {
-  height: 80%;
-  background-color: #00ff00;
-}
-
-
-div.seven-suitrows {
+  height: 10px;
 }
 
 div.seven-suitrow {
-  width: 25%;
-  height: 300px;
+  width: 24%;
+  height: 100%;
   border: 1px black solid;
   box-sizing: border-box;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 8px 8px;
+  background-color: #ffffff;
   float: left;
   position: relative;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
 }
 
 div.seven-suitrow-center {
@@ -65,19 +144,37 @@ img.seven.card {
 .float-clear {
   clear: both;
 }
+
+div.chat-box {
+  margin-left: 10px;
+  height: 460px;
+  background: #333;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px black solid;
+}
+
 div.chat-box > div.chat-message-wrapper {
   height: 90%;
   width: 100%;
-  background-color: #ff00ff;
+  background-color: #444;
   overflow-y: auto;
 }
 
 div.chat-box > div.chat-message-wrapper > div.chat-message {
-  border-bottom: 1px black solid;
-  background-color: #ffffff;
-  margin-top: 3px;
+  background-color: #dddddd;
+  min-height: 30px;
+  line-height: 30px;
+  vertical-align: bottom;
 }
 
+div.chat-box > .chat-box-title {
+  font-size: 1.2em;
+  text-align: center;
+  color: #88f;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
 
 div.chat-box > .chat-input-box {
   height: 10%;
@@ -85,6 +182,8 @@ div.chat-box > .chat-input-box {
 
 div.chat-box > .chat-input-box > input {
   height: 100%;
-  width: 98%;
+  width: 100%;
   border-width: 1%;
+  box-sizing: border-box;
+  border: 1px black solid;
 }

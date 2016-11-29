@@ -13,13 +13,14 @@ export default class ChatView extends React.Component {
     const { chats } = this.props;
     return (
         <div className="chat-box">
-          <div>Chat Message: </div>
+          <div className="chat-box-title">Chat Message: </div>
           <div className="chat-message-wrapper">
             {
               chats.map((chat, index) => {
                 return (
                     <div className="chat-message">
-                      <span>{chat.get("author")}:</span>
+                      <span className="chat-message-pad">&nbsp;</span>
+                      <span>{chat.get("author")}: </span>
                       <span>{chat.get("text")}</span>
                     </div>
                 )

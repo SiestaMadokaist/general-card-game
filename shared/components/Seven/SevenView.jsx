@@ -25,11 +25,14 @@ export default class SevenView extends React.Component {
     const { chats, suitrows, enemies, myHand, dispatch } = this.props;
     return (
       <div className="seven-wrapper">
-        <div className="seven-left-view">
+        <div className="seven-top-view">
           <EnemiesView enemies={enemies} {...bindActionCreators(EnemiesActions, dispatch)} />
+          <div className="float-clear" />
         </div>
-        <div className="seven-mid-view">
+        <div className="float-clear" />
+        <div className="seven-left-view">
           <SuitRowsView suitrows={suitrows} {...bindActionCreators(SuitRowActions, dispatch)} />
+          <div className="seven-left-separator"></div>
           <MyHandView myHand={myHand} {...bindActionCreators(MyHandActions, dispatch)} />
         </div>
         <div className="seven-right-view">

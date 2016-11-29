@@ -7,7 +7,7 @@ export default class EnemiesView extends React.Component {
   render(){
     const { enemies, dispatch } = this.props;
     return (
-        <div className="enemies-view">
+        <div className="seven-enemies-view">
           {
             enemies.map((enemy, index)=> {
               return (<EnemyView enemy={enemy} {...bindActionCreators(EnemiesActions, dispatch)} />) 

@@ -1,13 +1,24 @@
 import React from 'react';
 
 export default class EnemyView extends React.Component {
+
+  cardBackView(){
+    return "http://example.com";
+  }
+
+  cardClosedView(){
+    return "http://example.com";
+  }
+
   render(){
     const { enemy } = this.props;
     return (
         <div className="seven-enemy-view">
-          <div>name: {enemy.get("playerName")}</div>
-          <div>cards: {enemy.get("playableCount")}</div>
-          <div>closed: {enemy.get("closedCount")}</div>
+          <span className="player-name">{enemy.get("playerName")}</span>
+          <span className="available-card">&nbsp;</span>
+          <span>{enemy.get("playableCount")}</span>
+          <span className="closed-card">&nbsp;</span>
+          <span>{enemy.get("closedCount")}</span>
         </div>
     )
   }
