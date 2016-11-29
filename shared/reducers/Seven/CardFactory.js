@@ -1,4 +1,4 @@
-import { DIAMOND, CLOVER, HEARTS, SPADE } from './SuitRowFactory';
+import { DIAMOND, CLOVER, HEART, SPADE } from './SuitRowFactory';
 import { SuitRowFactory as SRF } from './SuitRowFactory';
 import { fromJS } from 'immutable';
 import { imageHost } from 'config';

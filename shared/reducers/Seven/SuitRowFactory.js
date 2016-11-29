@@ -8,7 +8,7 @@ class SuitRowFactory {
   }
 
   static suits(){
-    return ["DIAMOND", "CLOVER", "HEARTS", "SPADE"];
+    return ["DIAMOND", "CLOVER", "HEART", "SPADE"];
   }
 
   static suitInverse(suitId){
@@ -33,6 +33,6 @@ module.exports = {
   SuitRowFactory: SuitRowFactory,
   DIAMOND: 0,
   CLOVER: 1,
-  HEARTS: 2,
+  HEART: 2,
   SPADE: 3
 }
