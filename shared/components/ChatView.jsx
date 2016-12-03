@@ -4,7 +4,7 @@ import { socket } from 'components/Seven/SocketConnection';
 
 export default class ChatView extends React.Component {
   componentDidMount(){
-    socket.on("chat", (data) => {
+    socket.on("server+chat", (data) => {
       this.props.addChat("", "", "...");
     })
   }
@@ -14,7 +14,7 @@ export default class ChatView extends React.Component {
     if(e.key === 'Enter'){
       const message = e.currentTarget.value;
       const { playerId, roomId } = this.props;
-      socket.emit("chat", {playerId, roomId, message});
+      socket.emit("client+chat", {playerId, roomId, message});
       e.currentTarget.value = "";
     }
   }

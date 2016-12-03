@@ -13,7 +13,7 @@ export default class SocketHandler {
   prepare(){
     this._io().on("connection", (client) =>{
       client.on("join", this.onJoin(client));
-      client.on("chat", this.onChat(client));
+      client.on("client+chat", this.onChat(client));
       client.on("play", this.onPlay(client));
       client.on("pingtest", this.onPingTest(client));
     })
@@ -31,7 +31,7 @@ export default class SocketHandler {
       console.log("chat %j", data);
       this
         ._io()
-        .to(data.roomId).emit("chat", data)
+        .to(data.roomId).emit("server+chat", data)
     }
   }
 
