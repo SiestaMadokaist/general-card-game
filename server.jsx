@@ -10,19 +10,25 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import * as reducers from 'reducers';
 import routes from 'routes';
-import { cssPath } from 'config';
+import { cssPath, socketPort } from 'config';
 import path from 'path';
-// import http from 'http';
+import http from 'http';
+import SocketHandler from 'server/socket-handler';
+import store from 'components/Seven/store';
 
 const app = express();
+const server = http.createServer(app);
+server.listen(socketPort);
+
+const SevenSocketHandler = new SocketHandler(server, "/SEVEN");
+SevenSocketHandler.prepare();
 
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 const ASSETS_ROOT = path.join(PROJECT_ROOT, "public/assets");
+
 app.use("/static", express.static("public"));
 app.use((req, res) => {
   const location = createLocation(req.url);
-  const reducer = combineReducers(reducers);
-  const store = createStore(reducer);
 
   match({routes, location}, (err, redirectLocation, renderProps) => {
     if(err){
@@ -90,7 +96,6 @@ module.exports = app;
   // res.render('home.jade');
 // });
 
-// server.listen(appPort);
 
 // io.of("/seven").on("connection", (socket) => {
   // socket.on("play", (data) => {

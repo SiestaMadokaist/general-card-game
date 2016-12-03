@@ -1,10 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-@connect(state => ({}))
+import { socket } from 'components/Seven/SocketConnection';
+import { socketStore } from 'components/Seven/SocketConnection';
+import store from 'components/Seven/store';
+socketStore(store);
+
 export default class ChatView extends React.Component {
+
   triggerChat(e, data){
+    const { chats } = this.props;
+    const st = store;
     if(e.key === 'Enter'){
-      this.props.addChat("TODO", "", e.currentTarget.value);
+      const message = e.currentTarget.value;
+      const { playerId, roomId } = this.props;
+      socket.emit("chat", {playerId, roomId, message});
       e.currentTarget.value = "";
     }
   }

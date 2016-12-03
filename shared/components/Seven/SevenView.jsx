@@ -23,6 +23,7 @@ import ChatActions from 'actions/ChatActions';
 export default class SevenView extends React.Component {
   render(){
     const { chats, suitrows, enemies, myHand, dispatch } = this.props;
+    const { roomId, playerId } = this.props.params;
     return (
       <div className="seven-wrapper">
         <div className="seven-top-view">
@@ -33,10 +34,10 @@ export default class SevenView extends React.Component {
         <div className="seven-left-view">
           <SuitRowsView suitrows={suitrows} {...bindActionCreators(SuitRowActions, dispatch)} />
           <div className="seven-left-separator"></div>
-          <MyHandView myHand={myHand} {...bindActionCreators(MyHandActions, dispatch)} />
+          <MyHandView roomId={roomId} playerId={playerId} myHand={myHand} {...bindActionCreators(MyHandActions, dispatch)} />
         </div>
         <div className="seven-right-view">
-          <ChatView chats={chats} {...bindActionCreators(ChatActions, dispatch)} />
+          <ChatView roomId={roomId} playerId={playerId} chats={chats} {...bindActionCreators(ChatActions, dispatch)} />
         </div>
         <div className="float-clear" />
      </div>

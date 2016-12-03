@@ -12,7 +12,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    modulesDirectories: ['node_modules', 'shared'],
+    modulesDirectories: ['node_modules', 'shared', 'server'],
     extensions:         ['', '.js', '.jsx']
   },
   module: {

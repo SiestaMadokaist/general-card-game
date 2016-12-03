@@ -2,7 +2,7 @@ import { List, Map, fromJS } from 'immutable';
 import { ADD } from 'actions/ChatActions';
 
 const debug = fromJS({author: "me", text: "9999"})
-const defaultState = List().push(debug).push(debug);
+const defaultState = List().push(debug);
 
 export default function chatReducer(state = defaultState, action){
   if(action.type === ADD){
@@ -12,6 +12,7 @@ export default function chatReducer(state = defaultState, action){
       imageUrl,
       text
     })
+    console.log(action);
     return state.push(map);
   }else{
     return state;

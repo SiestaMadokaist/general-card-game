@@ -3,6 +3,9 @@ import Draggable from 'react-draggable';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 
+import io from 'socket.io-client';
+import { socket } from 'components/Seven/SocketConnection';
+
 @connect(state => ({}))
 export default class CardView extends React.Component {
   dragEventValue(e, suitArg){
@@ -32,9 +35,9 @@ export default class CardView extends React.Component {
   }
 
   handleDragStop = (e, data) => {
-    const { card } = this.props;
+    const { card, playerId, roomId } = this.props;
     if(this.dragEventIsOnTheRightPosition(e)){
-      this.setState({position: {x: data.x, y: data.y}});
+      socket.emit("play", {playerId, roomId, card})
     }else{
       this.setState({position: {x: 0, y: 0}});
     }
@@ -66,10 +69,19 @@ export default class CardView extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      renderFlag: 0,
       position: {
         x: 0,
         y: 0
       }
+    }
+  }
+
+  componentDidMount(){
+    const { roomId } = this.props;
+    if(this.state.renderFlag == 0){
+      socket.emit("join", {roomId});
+      this.setState({renderFlag: 1});
     }
   }
 
