@@ -2,6 +2,7 @@ const _SOCKET = require("socket.io");
 const Room = require("../../room.js");
 const Seven = require("../seven.js")
 const Player = require("../../player.js");
+import http from 'http';
 
 class SocketHandler{
   static listen(server){
@@ -24,13 +25,19 @@ class SocketHandler{
    */
   static run(){
     this.connection().of(this.namespace())
-      .on("connection", this.onConnection())
+      .on("connection", this.onConnection.bind(this)())
   }
 
   static onConnection(socket){
+    console.log("connected");
+    socket.on("ping", (data) => this.onPing(socket, data));
     socket.on("play", (data) => this.onPlay(socket, data));
     socket.on("start", (data) => this.onStart(socket, data));
     socket.on("join", (data) => this.onJoin(socket, data));
+  }
+
+  static onPing(socket, data){
+    console.log(`client pinged ${data}`)
   }
 
   static onJoin(socket, data){
