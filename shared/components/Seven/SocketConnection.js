@@ -1,13 +1,18 @@
-import io from 'socket.io-client';
-import { socketServer, } from 'config';
 import ChatActions from 'actions/ChatActions';
-const socket = io(`${socketServer}/SEVEN`);
+import { socketServer } from 'config';
+import io from 'socket.io-client';
+import assert from 'underscore.assert';
+import { CJOIN } from 'components/Seven/SocketAction';
+
+const socket = io(`${socketServer}/7Spade`);
+const state = {
+  roomId: undefined
+};
 
 exports.socket = socket;
-exports.socketStore = function(store){
-  const { addChat } = ChatActions;
-  socket.on("chat", (data) => {
-    // console.log(data.playerId, data.message);
-    store.dispatch(addChat(data.playerId, "", data.message))
-  })
-};
+exports.socketJoin = (roomId) => {
+  if(state.roomId === undefined){
+    socket.emit(CJOIN, {roomId});
+    state.roomId = roomId;
+  }
+}

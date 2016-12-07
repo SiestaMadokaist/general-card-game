@@ -1,12 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { socket } from 'components/Seven/SocketConnection';
+import { socket, socketJoin } from 'components/Seven/SocketConnection';
+import { SCHAT, CCHAT } from 'components/Seven/SocketAction';
 
+@connect(state => ({
+  chats: state.chats
+}))
 export default class ChatView extends React.Component {
+  constructor(props){
+    super(props);
+    this.addChat = (data) => {
+      this.props.addChat(data.author, "", data.message);
+    }
+  }
+
   componentDidMount(){
-    socket.on("server+chat", (data) => {
-      this.props.addChat("", "", "...");
-    })
+    socketJoin(this.props.roomId)
+    socket.on(SCHAT, this.addChat)
+  }
+
+  componentWillUnmount(){
+    socket.off(SCHAT, this.addChat)
   }
 
   triggerChat(e, data){
@@ -14,7 +28,7 @@ export default class ChatView extends React.Component {
     if(e.key === 'Enter'){
       const message = e.currentTarget.value;
       const { playerId, roomId } = this.props;
-      socket.emit("client+chat", {playerId, roomId, message});
+      socket.emit(CCHAT, {playerId, roomId, message});
       e.currentTarget.value = "";
     }
   }
