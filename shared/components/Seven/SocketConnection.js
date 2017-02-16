@@ -1,8 +1,8 @@
 import ChatActions from 'actions/ChatActions';
 import { socketServer } from 'config';
 import io from 'socket.io-client';
-import assert from 'underscore.assert';
-import { CJOIN } from 'components/Seven/SocketAction';
+// import assert from 'underscore.assert';
+// import { CJOIN } from 'components/Seven/SocketAction';
 
 const socket = io(`${socketServer}/7Spade`);
 const state = {

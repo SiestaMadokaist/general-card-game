@@ -1,6 +1,5 @@
 "use strict";
 import socket from "socket.io";
-import assert from 'underscore.assert';
 
 export default class SocketHandler {
   static register(server){
@@ -8,7 +7,7 @@ export default class SocketHandler {
   }
 
   constructor(namespace="/"){
-    assert(this.socketRef !== undefined, "you must first register the server using SocketHandler.register(server)")
+    // assert(this.socketRef !== undefined, "you must first register the server using SocketHandler.register(server)")
     this.props = {
       io: this.socketRef().of(namespace)
     }

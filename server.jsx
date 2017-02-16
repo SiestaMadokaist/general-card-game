@@ -13,17 +13,10 @@ import routes from 'routes';
 import { cssPath, socketPort } from 'config';
 import path from 'path';
 import http from 'http';
-import SocketHandler from 'server/socket-handler';
-import SevenSocketHandler from 'server/socket-seven-spade';
-import store from 'components/Seven/store';
 
 const app = express();
 const server = http.createServer(app);
 server.listen(socketPort);
-
-SocketHandler.register(server);
-const SevenSocketHandlerInstance = new SevenSocketHandler("/7Spade");
-SevenSocketHandlerInstance.prepare();
 
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 const ASSETS_ROOT = path.join(PROJECT_ROOT, "public/assets");
